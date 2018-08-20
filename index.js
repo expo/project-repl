@@ -39,6 +39,7 @@ async function readJsonFileAsync(p) {
  * @param {Object} [opts] Additional options
  *
  * Options are:
+ *    ignore - Object with files and modules lists keys
  *    ignoreFiles - List of files and directories to ignore (matches the basename)
  *    ignoreModules - List of npm modules to ignore and not require
  *    devDependencies - Boolean; if true, devDependencies will be required. Defaults to false
@@ -52,12 +53,13 @@ async function readJsonFileAsync(p) {
 class Requirer {
   constructor(dir, require_, opts) {
     this._dir = dir || '.';
-    this._opts = opts || {};
+    this._constructorOpts = opts || {};
     this._require = require_;
   }
 
   async _getConfigAsync() {
     await this._getPackageJsonAsync();
+    this._opts = Object.assign({}, this._pkg, this._constructorOpts);
     this._ignore = this._getIgnores();
   }
 
