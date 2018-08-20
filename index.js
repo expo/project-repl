@@ -5,7 +5,7 @@ let recursiveReaddirAsync = require('recursive-readdir');
 
 /**
  * Promise interface for `fs.readFile`
- * 
+ *
  * @param {<string> | <Buffer> | <URL> | <integer>} p filename or file descriptor
  * @param {<Object> | <string>} options
  */
@@ -23,9 +23,9 @@ async function readFileAsync(...args) {
 
 /**
  * Reads the contents of a JSON file at a path and returns a JS object
- * 
+ *
  * @param {<string>} p path to JSON file
- * 
+ *
  */
 async function readJsonFileAsync(p) {
   return JSON.parse(await readFileAsync(p, 'utf8'));
@@ -33,11 +33,11 @@ async function readJsonFileAsync(p) {
 
 /**
  * Class for requiring everything in a project
- * 
+ *
  * @param {string} dir The directory of the project
  * @param {function} require_ A function that requires a string from the root directory of the project
  * @param {Object} [opts] Additional options
- * 
+ *
  * Options are:
  *    ignoreFiles - List of files and directories to ignore (matches the basename)
  *    ignoreModules - List of npm modules to ignore and not require
@@ -47,7 +47,7 @@ async function readJsonFileAsync(p) {
  *    modulesThreshold - Threshold in ms for when to show times for module requires, default 0
  *    filesThreshold - Threshold in ms for when to show times for file requires, default 10
  *    threshold - Default value for module and files thresholds
- * 
+ *
  */
 class Requirer {
   constructor(dir, require_, opts) {
@@ -62,7 +62,6 @@ class Requirer {
   }
 
   async _getPackageJsonAsync() {
-
     // Read package.json if it exists
     let pkgPath = path.join(this._dir, 'package.json');
     try {
@@ -111,7 +110,9 @@ class Requirer {
 
   _getIgnores() {
     let ignoreFiles = {};
-    let ignoreModules = {};
+    let ignoreModules = {
+      'project-repl': true,
+    };
 
     let pkg = this._pkg;
     let bfiles = (pkg.repl && pkg.repl.ignore && pkg.repl.ignore.files) || [];
@@ -188,9 +189,9 @@ class Requirer {
   }
 
   /**
-   * Requires all modules and files and returns information about 
+   * Requires all modules and files and returns information about
    * what was required and how long it took
-   * 
+   *
    */
   async requireAsync() {
     await this._getConfigAsync();
@@ -267,10 +268,10 @@ class Requirer {
     let results = await this.requireAsync();
     let { modules, files } = results.times;
 
-    let projectVersion = this._pkg.version || "";
+    let projectVersion = this._pkg.version || '';
     let projectName = this._pkg.name || path.basename(path.resolve(this._dir));
     let nodeVersion = process.version;
-    console.log('// ' + projectName + " v" + projectVersion + " // node " + nodeVersion);
+    console.log('// ' + projectName + ' v' + projectVersion + ' // node ' + nodeVersion);
 
     console.log(
       Object.keys(modules).length +
