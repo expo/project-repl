@@ -6,7 +6,7 @@
   "author": "Charlie Cheever <ccheever@gmail.com>",
   "license": "MIT",
   "bin": {
-    "repl": "./repl"
+    "make-repl": "./make-repl"
   },
   "repl": {
     "ignore": {
