@@ -1,12 +1,13 @@
 {
   "name": "project-repl",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "index.js",
   "repository": "https://github.com/expo/project-repl.git",
   "author": "Charlie Cheever <ccheever@gmail.com>",
   "license": "MIT",
   "bin": {
-    "make-repl": "./make-repl"
+    "make-repl": "./make-repl",
+    "repl": "./project-repl"
   },
   "repl": {
     "ignore": {
