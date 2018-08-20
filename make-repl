@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-node -e "require('.').makeRepl(process.argv[1]);" $*
+node -e "require('project-repl').makeRepl(process.argv[1]);" $*
