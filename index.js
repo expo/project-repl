@@ -257,8 +257,17 @@ module.exports = (dir, opts) => {
   r.requireAndLogAsync();
 };
 
+let repl = `#!/usr/bin/env sh
+node --experimental-repl-await -i -e "require('project-repl')('.');"
+`;
 Object.assign(module.exports, {
   Requirer,
+  repl,
+  makeRepl: (file) => {
+    file = file || 'repl';
+    fs.writeFileSync(file, repl, 'utf8');
+    fs.chmodSync(file, 0755);
+  },
 });
 
 if (require.main === module) {
