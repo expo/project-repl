@@ -1,6 +1,6 @@
 {
   "name": "project-repl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "https://github.com/expo/project-repl.git",
   "author": "Charlie Cheever <ccheever@gmail.com>",
@@ -10,10 +10,8 @@
   },
   "repl": {
     "ignore": {
-      "files": [
-      ],
-      "modules": [
-      ]
+      "files": [],
+      "modules": []
     }
   },
   "dependencies": {
