@@ -45,8 +45,8 @@ async function readJsonFileAsync(p) {
  *    devDependencies - Boolean; if true, devDependencies will be required. Defaults to false
  *    into - Object to require everything into; Defaults to `global`
  *    dontPopulateGlobalWithMain - If true, won't take the objects exported by the main file and put them into `into`
- *    modulesThreshold - Threshold in ms for when to show times for module requires, default 0
- *    filesThreshold - Threshold in ms for when to show times for file requires, default 10
+ *    modulesThreshold - Threshold in ms for when to show times for module requires, default 4
+ *    filesThreshold - Threshold in ms for when to show times for file requires, default 4
  *    threshold - Default value for module and files thresholds
  *
  */
@@ -285,9 +285,9 @@ class Requirer {
     );
 
     console.log(
-      this._dispForTimes(modules, this._opts.modulesThreshold || this._opts.threshold || 0)
+      this._dispForTimes(modules, this._opts.modulesThreshold || this._opts.threshold || 4)
     );
-    console.log(this._dispForTimes(files, this._opts.filesThreshold || this._opts.threshold || 10));
+    console.log(this._dispForTimes(files, this._opts.filesThreshold || this._opts.threshold || 4));
     if (results.mainExports.length > 0) {
       console.log(results.mainExports.join(' '));
     }
