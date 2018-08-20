@@ -1,9 +1,14 @@
-// let fsp = require('fs').promises;
 let fs = require('fs');
 let path = require('path');
 
 let recursiveReaddirAsync = require('recursive-readdir');
 
+/**
+ * Promise interface for `fs.readFile`
+ * 
+ * @param {<string> | <Buffer> | <URL> | <integer>} p filename or file descriptor
+ * @param {<Object> | <string>} options
+ */
 async function readFileAsync(...args) {
   return new Promise((resolve, reject) => {
     fs.readFile(...args, (err, result) => {
@@ -16,14 +21,39 @@ async function readFileAsync(...args) {
   });
 }
 
+/**
+ * Reads the contents of a JSON file at a path and returns a JS object
+ * 
+ * @param {<string>} p path to JSON file
+ * 
+ */
 async function readJsonFileAsync(p) {
   return JSON.parse(await readFileAsync(p, 'utf8'));
 }
 
+/**
+ * Class for requiring everything in a project
+ * 
+ * @param {string} dir The directory of the project
+ * @param {function} require_ A function that requires a string from the root directory of the project
+ * @param {Object} [opts] Additional options
+ * 
+ * Options are:
+ *    ignoreFiles - List of files and directories to ignore (matches the basename)
+ *    ignoreModules - List of npm modules to ignore and not require
+ *    devDependencies - Boolean; if true, devDependencies will be required. Defaults to false
+ *    into - Object to require everything into; Defaults to `global`
+ *    dontPopulateGlobalWithMain - If true, won't take the objects exported by the main file and put them into `into`
+ *    modulesThreshold - Threshold in ms for when to show times for module requires, default 0
+ *    filesThreshold - Threshold in ms for when to show times for file requires, default 10
+ *    threshold - Default value for module and files thresholds
+ * 
+ */
 class Requirer {
-  constructor(dir, opts) {
+  constructor(dir, require_, opts) {
     this._dir = dir || '.';
     this._opts = opts || {};
+    this._require = require_;
   }
 
   async _getConfigAsync() {
@@ -32,6 +62,7 @@ class Requirer {
   }
 
   async _getPackageJsonAsync() {
+
     // Read package.json if it exists
     let pkgPath = path.join(this._dir, 'package.json');
     try {
@@ -156,6 +187,11 @@ class Requirer {
     return files;
   }
 
+  /**
+   * Requires all modules and files and returns information about 
+   * what was required and how long it took
+   * 
+   */
   async requireAsync() {
     await this._getConfigAsync();
     let modules = this._getModules();
@@ -169,7 +205,7 @@ class Requirer {
     for (let m of modules) {
       let name = this._varNameForModule(m);
       let startTime = Date.now();
-      g[name] = require(m);
+      g[name] = this._require(m);
       let endTime = Date.now();
       let t = endTime - startTime;
       times.modules[m] = t;
@@ -183,7 +219,7 @@ class Requirer {
       let fNoSuffix = f.substr(0, f.length - '.js'.length);
       let fWithPrefix = './' + fNoSuffix;
       let startTime = Date.now();
-      g[name] = require(fWithPrefix);
+      g[name] = this._require(fWithPrefix);
       let endTime = Date.now();
 
       // If this is the main thing, then copy the exports into the global space
@@ -224,6 +260,9 @@ class Requirer {
     return disp.join(' ');
   }
 
+  /**
+   * Requires all files and logs the results in a sensible way
+   */
   async requireAndLogAsync() {
     let results = await this.requireAsync();
     let { modules, files } = results.times;
@@ -255,13 +294,13 @@ class Requirer {
   }
 }
 
-module.exports = (dir, opts) => {
-  let r = new Requirer(dir, opts);
+module.exports = (dir, require_, opts) => {
+  let r = new Requirer(dir, require_, opts);
   r.requireAndLogAsync();
 };
 
 let repl = `#!/usr/bin/env sh
-node --experimental-repl-await -i -e "require('project-repl')('.');"
+node --experimental-repl-await -i -e "require('project-repl')('.', (x) => require(x));"
 `;
 Object.assign(module.exports, {
   Requirer,
