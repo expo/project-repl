@@ -1,0 +1,22 @@
+{
+  "name": "project-repl",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/expo/project-repl.git",
+  "author": "Charlie Cheever <ccheever@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "repl": "./repl"
+  },
+  "repl": {
+    "ignore": {
+      "files": [
+      ],
+      "modules": [
+      ]
+    }
+  },
+  "dependencies": {
+    "recursive-readdir": "^2.2.2"
+  }
+}
