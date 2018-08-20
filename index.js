@@ -228,7 +228,10 @@ class Requirer {
     let results = await this.requireAsync();
     let { modules, files } = results.times;
 
-    console.log('// ' + (this._pkg.name || path.basename(path.resolve(this._dir))));
+    let projectVersion = this._pkg.version || "";
+    let projectName = this._pkg.name || path.basename(path.resolve(this._dir));
+    let nodeVersion = process.version;
+    console.log('// ' + projectName + " v" + projectVersion + " // node " + nodeVersion);
 
     console.log(
       Object.keys(modules).length +
