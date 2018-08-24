@@ -59,9 +59,13 @@ class Requirer {
 
   async _getConfigAsync() {
     await this._getPackageJsonAsync();
-    this._opts = Object.assign({
-      populateGlobalWithMain: true,
-    }, this._pkg, this._constructorOpts);
+    this._opts = Object.assign(
+      {
+        populateGlobalWithMain: true,
+      },
+      this._pkg.repl,
+      this._constructorOpts
+    );
     this._ignore = this._getIgnores();
   }
 
@@ -113,7 +117,9 @@ class Requirer {
   }
 
   _getIgnores() {
-    let ignoreFiles = {};
+    let ignoreFiles = {
+      __tests__: true,
+    };
     let ignoreModules = {
       'project-repl': true,
     };
@@ -179,6 +185,9 @@ class Requirer {
           }
         } else {
           if (basename.endsWith('.js')) {
+            if (basename.endsWith('.test.js')) {
+              return true;
+            }
             if (this._ignore.files[basename] || this._ignore.files[file]) {
               return true;
             }
