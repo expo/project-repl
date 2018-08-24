@@ -1,26 +1,26 @@
 # project-repl
 Adds a REPL to the codebase of a project that will require all the project's depdendencies and all its source files and store them in global variables you can access from the REPL.
 
-Usage:
+## Usage:
 
-To add to a project:
+### To add to a project:
 ```shell
-yarn add project-repl
+yarn add --dev project-repl
 npx make-repl
 ```
 
-To run the repl:
+### To run the repl:
 ```shell
 ./repl
 ```
 
-Or if you didn't do `npx make-repl`, you can just do
+Or if you didn't want to do `npx make-repl`, you can just do
 ```shell
 npx repl
 ```
 
-This will require all your dependencies and .js files and tell you 
-how long they took to require.
+The repl will startup and require all your dependencies and
+.js files and tell you how long they took to require.
 
 You'll see a Node shell that looks something like this:
 
@@ -37,7 +37,7 @@ The times in parentheses are how long it took to require each module and file th
 
 If you have a `main` specified in your `package.json`, the exports of that will be assigned to the global namespace as well, and listed in the output at the top of the REPL.
 
-### Configuration
+## Configuration
 
 The easiest way to configure the project REPL is to add a `repl` section to your `package.json`. 
 

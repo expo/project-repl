@@ -9,6 +9,9 @@
     "make-repl": "./make-repl",
     "repl": "./project-repl"
   },
+  "scripts":{
+    "test": "jest"
+  },
   "repl": {
     "ignore": {
       "files": [],
@@ -17,5 +20,8 @@
   },
   "dependencies": {
     "recursive-readdir": "^2.2.2"
+  },
+  "devDependencies": {
+    "jest": "^23.5.0"
   }
 }

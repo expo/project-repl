@@ -313,7 +313,7 @@ Object.assign(module.exports, {
   makeRepl: (file) => {
     file = file || 'repl';
     fs.writeFileSync(file, repl, 'utf8');
-    fs.chmodSync(file, 0755);
+    fs.chmodSync(file, '755');
   },
 });
 
