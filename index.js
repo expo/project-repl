@@ -44,7 +44,7 @@ async function readJsonFileAsync(p) {
  *    ignoreModules - List of npm modules to ignore and not require
  *    devDependencies - Boolean; if true, devDependencies will be required. Defaults to false
  *    into - Object to require everything into; Defaults to `global`
- *    dontPopulateGlobalWithMain - If true, won't take the objects exported by the main file and put them into `into`
+ *    populateGlobalWithMain - If true, will take the objects exported by the main file and put them into `into`
  *    modulesThreshold - Threshold in ms for when to show times for module requires, default 4
  *    filesThreshold - Threshold in ms for when to show times for file requires, default 4
  *    threshold - Default value for module and files thresholds
@@ -59,7 +59,9 @@ class Requirer {
 
   async _getConfigAsync() {
     await this._getPackageJsonAsync();
-    this._opts = Object.assign({}, this._pkg, this._constructorOpts);
+    this._opts = Object.assign({
+      populateGlobalWithMain: true,
+    }, this._pkg, this._constructorOpts);
     this._ignore = this._getIgnores();
   }
 
@@ -226,7 +228,7 @@ class Requirer {
       let endTime = Date.now();
 
       // If this is the main thing, then copy the exports into the global space
-      if (this._pkg.main === f && !this._opts.dontPopulateGlobalWithMain) {
+      if (this._pkg.main === f && this._opts.populateGlobalWithMain) {
         Object.assign(g, g[name]);
         mainExports = Object.keys(g[name]);
       }
