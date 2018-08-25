@@ -228,6 +228,7 @@ class Requirer {
 
     let filesStartTime = Date.now();
     let mainExports = [];
+    let main = undefined;
     for (let f of files) {
       let name = this._varNameForFile(f);
       let fNoSuffix = f.substr(0, f.length - '.js'.length);
@@ -237,9 +238,13 @@ class Requirer {
       let endTime = Date.now();
 
       // If this is the main thing, then copy the exports into the global space
-      if (this._pkg.main === f && this._opts.populateGlobalWithMain) {
-        Object.assign(g, g[name]);
-        mainExports = Object.keys(g[name]);
+      if (this._pkg.main === f) {
+        main = this._varNameForModule(this._pkg.name);
+        g[main] = g[name];
+        if (this._opts.populateGlobalWithMain) {
+          Object.assign(g, g[name]);
+          mainExports = Object.keys(g[name]);
+        }
       }
 
       let t = endTime - startTime;
@@ -252,6 +257,7 @@ class Requirer {
       files,
       times,
       mainExports,
+      main,
     };
   }
 
@@ -295,12 +301,21 @@ class Requirer {
         'ms'
     );
 
-    console.log(
-      this._dispForTimes(modules, this._opts.modulesThreshold || this._opts.threshold || 4)
-    );
-    console.log(this._dispForTimes(files, this._opts.filesThreshold || this._opts.threshold || 4));
+    if (Object.keys(modules).length > 0) {
+      console.log(
+        this._dispForTimes(modules, this._opts.modulesThreshold || this._opts.threshold || 4)
+      );
+    }
+    if (Object.keys(files).length > 0) {
+      console.log(
+        this._dispForTimes(files, this._opts.filesThreshold || this._opts.threshold || 4)
+      );
+    }
     if (results.mainExports.length > 0) {
       console.log(results.mainExports.join(' '));
+    }
+    if (results.main) {
+      console.log(results.main);
     }
     process.stdout.write('> ');
 
