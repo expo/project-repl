@@ -237,14 +237,19 @@ class Requirer {
       g[name] = this._require(fWithPrefix);
       let endTime = Date.now();
 
-      // If this is the main thing, then copy the exports into the global space
+      // If this is the main file
       if (this._pkg.main === f) {
+
+        // Alias this to the name of the module for clarity and convenience
         main = this._varNameForModule(this._pkg.name);
         g[main] = g[name];
+
+        // Populate the global object with the exports of main
         if (this._opts.populateGlobalWithMain) {
           Object.assign(g, g[name]);
           mainExports = Object.keys(g[name]);
         }
+        
       }
 
       let t = endTime - startTime;
