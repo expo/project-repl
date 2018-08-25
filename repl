@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-node --experimental-repl-await -i -e "require('.')('.', (x) => require(x));"
+node --experimental-repl-await -i -e "require('.')('.', (x) => require(x));" $*

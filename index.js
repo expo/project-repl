@@ -329,8 +329,15 @@ module.exports = (dir, require_, opts) => {
 };
 
 let repl = `#!/usr/bin/env sh
-node --experimental-repl-await -i -e "require('project-repl')('.', (x) => require(x));"
+node --experimental-repl-await -i -e "require('project-repl')('.', (x) => require(x));" $*
 `;
+let majorVersion = parseInt(process.version.split('.')[0].substr(1));
+if (majorVersion < 10) {
+  repl = `#!/usr/bin/env sh
+node -i -e "require('project-repl')('.', (x) => require(x));" $*
+`;
+}
+
 Object.assign(module.exports, {
   Requirer,
   repl,
