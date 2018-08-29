@@ -9,8 +9,11 @@
     "make-repl": "./make-repl",
     "repl": "./project-repl"
   },
-  "scripts":{
+  "scripts": {
     "test": "jest"
+  },
+  "jest": {
+    "transform": {}
   },
   "repl": {
     "ignore": {
