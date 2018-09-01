@@ -83,9 +83,11 @@ Use `populateGlobalWithMain` to control whether the exports of `main` are added 
 
 `threshold`, `filesThreshold`, and `modulesThreshold` can be used to control the minimum number of ms before the REPL will print out how many ms it took to load that file or module. The default is 4ms.
 
+If you want no threshold, use -1 instead of 0. 0 will be interpreted as falsy and the default will be used.
+
 ```json
   "repl": {
-    "threshold": 0,
+    "threshold": -1,
   }
 ```
 
