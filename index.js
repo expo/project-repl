@@ -320,6 +320,12 @@ class Requirer {
     if (results.main) {
       console.log(results.main);
     }
+
+    // If we have a custom startup message, then display it
+    if (this._opts.startupMessage) {
+      console.log(this._opts.startupMessage);
+    }
+
     process.stdout.write('> ');
 
     return results;
