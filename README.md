@@ -43,7 +43,8 @@ The easiest way to configure the project REPL is to add a `repl` section to your
 
 #### Ignoring modules or files
 
-You can ignore modules and files by adding to the `modules` and `files` keys under repl.ignore.
+You can ignore modules and files by adding to the `modules` and `files` and `globs` keys 
+under `repl.ignore`.
 
 ```json
 
@@ -55,6 +56,10 @@ You can ignore modules and files by adding to the `modules` and `files` keys und
       ],
       "files": [
         "BigAndUnimportantFile.js"
+      ],
+      "globs": [
+        "big_data_files",
+        "**/*.generated.js",
       ]
     }
   ...

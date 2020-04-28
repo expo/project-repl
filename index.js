@@ -135,10 +135,13 @@ class Requirer {
       ignoreModules[bm] = true;
     }
 
-    return {
+    let ret = {
       files: Object.assign({}, ignoreFiles, this._opts.ignoreFiles),
       modules: Object.assign({}, ignoreModules, this._opts.ignoreModules),
+      globs: (pkg.repl && pkg.repl.ignore && pkg.repl.ignore.globs) || [],
     };
+
+    return ret;
   }
 
   _getModules() {
@@ -173,6 +176,7 @@ class Requirer {
 
   async _getFilesAsync() {
     let files = await recursiveReaddirAsync(this._dir, [
+      ...this._ignore.globs,
       (file, stats) => {
         let basename = path.basename(file);
         if (stats.isDirectory()) {
