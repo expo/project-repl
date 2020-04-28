@@ -19,7 +19,7 @@
     "ignore": {
       "files": [],
       "modules": [],
-      "globs": [],
+      "globs": []
     },
     "startupMessage": "// Welcome to the project-repl repl"
   },
