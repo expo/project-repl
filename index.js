@@ -244,7 +244,7 @@ class Requirer {
       // If this is the main file
       if (this._pkg.main === f) {
         // Alias this to the name of the module for clarity and convenience
-        main = this._varNameForModule(this._pkg.name);
+        main = this._varNameForModule(this._getProjectName());
         g[main] = g[name];
 
         // Populate the global object with the exports of main
@@ -287,6 +287,10 @@ class Requirer {
     return disp.join(' ');
   }
 
+  _getProjectName() {
+    return this._pkg.name || path.basename(path.resolve(this._dir));
+  }
+
   /**
    * Requires all files and logs the results in a sensible way
    */
@@ -295,7 +299,7 @@ class Requirer {
     let { modules, files } = results.times;
 
     let projectVersion = this._pkg.version || '';
-    let projectName = this._pkg.name || path.basename(path.resolve(this._dir));
+    let projectName = this._getProjectName();
     let nodeVersion = process.version;
     console.log('// ' + projectName + ' v' + projectVersion + ' // node ' + nodeVersion);
 
